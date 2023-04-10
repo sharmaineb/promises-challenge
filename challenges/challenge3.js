@@ -7,12 +7,21 @@
  *    Async/Await. How is this function different than a regular (non-async)
  *    function? What is its return type?
  * 
+ *    This function is different than a regular (non-async) function because
+ *    async and await are used. Async and await allow for asynchronous, promise-based
+ *    behavior. The return type is a Promise to print the greeting in uppercase.
+ * 
  * 
  * 2. Uncomment block #1 and run the code using `node challenge3.js`. What is
  *    printed when we use `greetAndUppercase` like a regular function?
  * 
+ *    Printed: Promise { <pending> }
+ * 
  * 
  * 3. Uncomment block #2 and run the code again. What happens now?
+ * 
+ *    Promise { <pending> }
+ *     HELLO THERE, DUCKY
  * 
  * 
  * 4. Write an asynchronous method 'spacer' that takes a string as input and 
@@ -61,21 +70,38 @@ function uppercaser(str) {
     });
 }
 
+function spacer(str) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof str === 'string') {
+        let space = '';
+        for (let i = 0; i < str.length; i++) {
+          space += str[i] + ' ';
+        }
+        resolve(str.split('').join(' '));
+      } else {
+        reject('Argument to spacer must be string')
+      }
+    }, 500)
+  })
+}
+
 async function greetAndUppercase(name) {
     greeting = await greet(name)
     uppercasedGreeting = await uppercaser(greeting)
-    return uppercasedGreeting
+    spaceGreet = await spacer(uppercasedGreeting)
+    return spaceGreet
 }
 
 /* Uncomment me! #1 */
-// result = greetAndUppercase('Ducky')
-// console.log(result)
+result = greetAndUppercase('Ducky')
+console.log(result)
 
 /* Uncomment me! #2 */
-// greetAndUppercase('Ducky')
-//     .then(function(result) {
-//         console.log(result)
-//     })
-//     .catch(function(err) {
-//         console.log(err)
-//     })
+greetAndUppercase('Ducky')
+    .then(function(result) {
+        console.log(result)
+    })
+    .catch(function(err) {
+        console.log(err)
+    })
